@@ -1,0 +1,31 @@
+name: Deploy nginx proxy
+on:
+  push: 
+    branches: 
+    - main
+
+jobs:
+  deploy:
+    name: Build & Push Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: ECR login
+        id: ecrlogin
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build & Deploy
+        env:
+          ECR_REGISTRY: ${{ steps.ecrlogin.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
+          IMAGE_TAG: ${{ github.sha }}
+        run:
+          docker build --compress build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
