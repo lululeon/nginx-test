@@ -1,4 +1,3 @@
-# nginx-test
+# a throwaway nginx proxy
 
-TODO
-
+build: `docker build -t proxy .`
