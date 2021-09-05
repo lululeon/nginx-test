@@ -1,4 +1,4 @@
-# a throwaway nginx proxy
+# tiny dockerized nginx proxy
 
 build: `docker build --no-cache -t proxy .`
-run as part of your docker compose network to simulate proxying your app server.
+run as part of a docker compose network to simulate proxying an app server.
