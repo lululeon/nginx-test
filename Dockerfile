@@ -2,10 +2,10 @@ FROM nginxinc/nginx-unprivileged:1-alpine
 
 COPY ./default.conf.tpl /etc/nginx/default.conf.tpl
 
+# defaults if no envs set
 ENV LISTEN_PORT=8000
 ENV APP_HOST=localhost
 ENV APP_PORT=3000
-ENV STATICS_DEST=/home/lululeon/data/static/idbl
 
 USER root
 
